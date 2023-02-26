@@ -1,3 +1,9 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 
 /* Body style */
 
@@ -5,7 +11,7 @@
     --font: 'Futura', 'Trebuchet MS', 'Arial', sans-serif;
   }
 
-  :root {
+:root {
     --orColour: #F34C19;
   }
 
@@ -24,6 +30,7 @@ body {
     margin: 30px;
     border: 5px solid black;
     box-shadow: 0 0 10px 5px  var(--orColour);
+    padding: 10px;
 }
 
 
@@ -87,6 +94,7 @@ font-size: 20px;
 font-family: var(--font);
 
 
+
 }
 
 .answerDiv {
@@ -121,24 +129,73 @@ font-family: var(--font);
 /* Score */
 
  .scoreB {
-    background-color: aqua;
     width: 100%;
     text-align: center;
     display: flex;
     flex-direction: column;
-    height: 200px;
+    align-items: center;
+    height: 50px;
+    font-size: 30px;
+    font-family: var(--font);
  }
 
  .scoreBox {
-    /* border: 10px solid black; */
-    background-color: gold;
+ margin: 30px;
+
+ }
+
+
+ .intCon1 {
+    display: flex;
+    justify-content: center;
+ }
+
+ .scoreBox2 {
+    border: none;
  }
 
  
- .intCon1 {
-    /* border: 5px solid black; */
-    background-color: bisque;
-    height: 50%;
-    border: 4px solid black;
+ .intCon2 {
+    border: none;
+    
  }
 
+.tableH {
+border: 4px solid black;
+background-color: #D3D3D3;
+width: 50%;
+}
+
+.tHeaders {
+
+background-color: var(--orColour);
+}
+
+.homeButt { 
+    border: 4px solid black;
+    width: fit-content;
+    height: fit-content;
+    font-size: 20px;
+    margin: 20px;
+    background-color: #D3D3D3;
+
+}
+
+.leaderText {
+    text-align: center;
+    font-size: 30px;
+}
+
+@media screen and (max-width: 600px) {
+    .quizButtons {
+      width: fit-content !important;
+      height: fit-content !important;
+      padding: 10px;
+    }
+  }
+
+@media screen and (max-width: 600px) {
+    .answerDiv {
+        width: fit-content;
+    }
+}
