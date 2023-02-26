@@ -8,9 +8,12 @@ const button = document.querySelector("button");
 let timeLeft = 100;
 let currentQuestionIndex = 0;
 let score = 0;
+let highScore =[];
+
 
 // Questions and answers
 const questions = [
+
   {
     question: "Arrays in JavaScript are defined by which of the following statements?",
     answers: ["It is an ordered list of values", "It is an ordered list of objects", " It is an ordered list of string", " It is an ordered list of functions"],
@@ -91,10 +94,11 @@ timerE.innerHTML = `Timer: ${timeLeft}`;
 if (timeLeft <= 0 || currentQuestionIndex >= questions.length) {
   clearInterval(countdown);
   showQuestion();
+  setTimeout(function() {
+    location.reload();
+  })
 }
 }, 1000);
-
-
 });
 
 
@@ -120,8 +124,11 @@ function showQuestion() {
     answerButton.addEventListener("click", function() {
       if (answer === currentQuestion.correctAnswer) {
         score++;
+        
+      } else {
+        timeLeft -= 10;
       }
-
+      
       currentQuestionIndex++;
       if (currentQuestionIndex < questions.length) {
         showQuestion();
@@ -139,6 +146,9 @@ function showQuestion() {
   buttonDiv.appendChild(questionContainer);
 }
 
+
+// Quiz ends
+
 function quizEnd () {
     buttonDiv.innerHTML = "";
     const endButton = document.createElement("button");
@@ -153,38 +163,103 @@ function quizEnd () {
     
       const scoreBox = document.createElement("div");
       scoreBox.classList.add("scoreBox");
-      scoreBox.textContent = "Score = []"
+      scoreBox.textContent = `Score = ${score}`;
+    
+      const storedScores = JSON.parse(localStorage.getItem("scores")) || [];
+      storedScores.push(score);
+      localStorage.setItem("scores", JSON.stringify(storedScores));
     
       const intCon = document.createElement("div");
       intCon.classList.add("intCon1");
     
-      // create a form element
+      // Initials form
       const form = document.createElement("form");
       form.addEventListener("submit", function(event) {
+        article1.innerHTML = "Leader Board";
+        article1.classList.add("leaderText");
         event.preventDefault();
+        const initialsProvide = inputField.value;
+  if (!initialsProvide) {
+    alert("Please enter your initials!");
+    return;
+  }
         const initials = inputField.value;
-        console.log(initials); // replace this with your code to store the initials
-      });
+        const initialsAndScores = JSON.parse(localStorage.getItem("initialsAndScores")) || [];
+        initialsAndScores.push({ initials, score });
+        localStorage.setItem("initialsAndScores", JSON.stringify(initialsAndScores));
+      
+        scoreBox.innerHTML = "";
+        intCon.innerHTML = "";
+        scoreBox.classList.add("scoreBox2");
+        intCon.classList.add("intCon2");
+
+        const highScoreTable = document.createElement("table");
+        const headerRow = document.createElement("tr");
+        const initialsHeader = document.createElement("th");
+        initialsHeader.textContent = "Initials";
+        const scoreHeader = document.createElement("th");
+        scoreHeader.textContent = "Score";
+
     
-      // create an input field for the initials
+        highScoreTable.classList.add("tableH");
+        headerRow.classList.add("tableH");
+        initialsHeader.classList.add("tableH", "tHeaders");
+        scoreHeader.classList.add("tableH", "tHeaders");
+
+
+        headerRow.appendChild(initialsHeader);
+        headerRow.appendChild(scoreHeader);
+        highScoreTable.appendChild(headerRow);
+       
+        const topScores = initialsAndScores.sort((a, b) => b.score - a.score).slice(0, 10);
+
+        for (let i = 0; i < topScores.length; i++) {
+          const row = document.createElement("tr");
+          const initialsCell = document.createElement("td");
+          const scoreCell = document.createElement("td");
+        
+          initialsCell.textContent = topScores[i].initials;
+          scoreCell.textContent = topScores[i].score;
+        
+          row.appendChild(initialsCell);
+          row.appendChild(scoreCell);
+          highScoreTable.appendChild(row);
+        }
+        
+        scoreB.appendChild(highScoreTable);
+
+        const homeButton = document.createElement("button");
+      
+        homeButton.classList.add("homeButt");
+        intCon.appendChild(homeButton);
+        homeButton.textContent = "Home";
+        homeButton.addEventListener("click", function() {
+            location.reload();
+        });
+        
+
+      });
+
+    
       const inputField = document.createElement("input");
       inputField.setAttribute("type", "text");
       inputField.setAttribute("placeholder", "Enter your initials");
     
-      // create a submit button for the form
       const submitButton = document.createElement("button");
       submitButton.setAttribute("type", "submit");
       submitButton.textContent = "Submit";
     
-      // append the input field and submit button to the form
       form.appendChild(inputField);
       form.appendChild(submitButton);
+      intCon.appendChild(form);
     
       scoreB.appendChild(scoreBox);
       scoreB.appendChild(intCon);
-      scoreB.appendChild(form); // append the form to the parent container
+    
       buttonDiv.appendChild(scoreB);
     });
-// Quiz style 
-
   }
+
+  // Home screen
+
+ 
