@@ -8,7 +8,7 @@ const button = document.querySelector("button");
 let timeLeft = 100;
 let currentQuestionIndex = 0;
 let score = 0;
-let highScore =[];
+let highScore = [];
 
 
 // Questions and answers
@@ -64,41 +64,41 @@ const questions = [
     answers: ["Null type", "Undefined type", "Number type", "All"],
     correctAnswer: "All"
   },
-  
+
 ];
 
 
 // Event(click) to start quiz and countdown/change style/remove
 
-startQuiz.addEventListener("click", function() {
-    article1.innerHTML = "";
-    body1.classList.add("body2");
-    body1.classList.remove("body1");
-    head1.classList.add("head-div2");
-    head1.classList.remove("head-div");
+startQuiz.addEventListener("click", function () {
+  article1.innerHTML = "";
+  body1.classList.add("body2");
+  body1.classList.remove("body1");
+  head1.classList.add("head-div2");
+  head1.classList.remove("head-div");
 
-    showQuestion();
-  
-// timer
-const timerE = document.createElement("p");
-button.remove();
-timerE.innerHTML = `Timer: ${timeLeft}`;
-timerE.style.fontSize = "30px";
-timerE.style.display = "flex";
-timerE.style.justifyContent = "center";
-article1.appendChild(timerE);
-
-const countdown = setInterval(function() {
-timeLeft--;
-timerE.innerHTML = `Timer: ${timeLeft}`;
-if (timeLeft <= 0 || currentQuestionIndex >= questions.length) {
-  clearInterval(countdown);
   showQuestion();
-  setTimeout(function() {
-    location.reload();
-  })
-}
-}, 1000);
+
+  // timer
+  const timerE = document.createElement("p");
+  button.remove();
+  timerE.innerHTML = `Timer: ${timeLeft}`;
+  timerE.style.fontSize = "30px";
+  timerE.style.display = "flex";
+  timerE.style.justifyContent = "center";
+  article1.appendChild(timerE);
+
+  const countdown = setInterval(function () {
+    timeLeft--;
+    timerE.innerHTML = `Timer: ${timeLeft}`;
+    if (timeLeft <= 0 || currentQuestionIndex >= questions.length) {
+      clearInterval(countdown);
+      showQuestion();
+      setTimeout(function () {
+        location.reload();
+      })
+    }
+  }, 1000);
 });
 
 
@@ -117,23 +117,23 @@ function showQuestion() {
   const answersElement = document.createElement("div");
   answersElement.classList.add("answerDiv");
 
-  currentQuestion.answers.forEach(function(answer) {
+  currentQuestion.answers.forEach(function (answer) {
     const answerButton = document.createElement("button");
     answerButton.classList.add("quizButtons");
     answerButton.innerHTML = answer;
-    answerButton.addEventListener("click", function() {
+    answerButton.addEventListener("click", function () {
       if (answer === currentQuestion.correctAnswer) {
         score++;
-        
+
       } else {
         timeLeft -= 10;
       }
-      
+
       currentQuestionIndex++;
       if (currentQuestionIndex < questions.length) {
         showQuestion();
       } else {
-        quizEnd ();
+        quizEnd();
       }
     });
     answersElement.appendChild(answerButton);
@@ -149,117 +149,117 @@ function showQuestion() {
 
 // Quiz ends
 
-function quizEnd () {
+function quizEnd() {
+  buttonDiv.innerHTML = "";
+  const endButton = document.createElement("button");
+  endButton.classList.add("endButton");
+  endButton.textContent = ("See your score!");
+  buttonDiv.appendChild(endButton);
+
+  endButton.addEventListener("click", function () {
     buttonDiv.innerHTML = "";
-    const endButton = document.createElement("button");
-    endButton.classList.add("endButton");
-    endButton.textContent = ("See your score!");
-    buttonDiv.appendChild(endButton);
+    const scoreB = document.createElement("div");
+    scoreB.classList.add("scoreB");
 
-    endButton.addEventListener("click", function() {
-      buttonDiv.innerHTML = "";
-      const scoreB = document.createElement("div");
-      scoreB.classList.add("scoreB");
-    
-      const scoreBox = document.createElement("div");
-      scoreBox.classList.add("scoreBox");
-      scoreBox.textContent = `Score = ${score}`;
-    
-      const storedScores = JSON.parse(localStorage.getItem("scores")) || [];
-      storedScores.push(score);
-      localStorage.setItem("scores", JSON.stringify(storedScores));
-    
-      const intCon = document.createElement("div");
-      intCon.classList.add("intCon1");
-    
-      // Initials form
-      const form = document.createElement("form");
-      form.addEventListener("submit", function(event) {
-        article1.innerHTML = "Leader Board";
-        article1.classList.add("leaderText");
-        event.preventDefault();
-        const initialsProvide = inputField.value;
-  if (!initialsProvide) {
-    alert("Please enter your initials!");
-    return;
-  }
-        const initials = inputField.value;
-        const initialsAndScores = JSON.parse(localStorage.getItem("initialsAndScores")) || [];
-        initialsAndScores.push({ initials, score });
-        localStorage.setItem("initialsAndScores", JSON.stringify(initialsAndScores));
-      
-        scoreBox.innerHTML = "";
-        intCon.innerHTML = "";
-        scoreBox.classList.add("scoreBox2");
-        intCon.classList.add("intCon2");
+    const scoreBox = document.createElement("div");
+    scoreBox.classList.add("scoreBox");
+    scoreBox.textContent = `Score = ${score}`;
 
-        const highScoreTable = document.createElement("table");
-        const headerRow = document.createElement("tr");
-        const initialsHeader = document.createElement("th");
-        initialsHeader.textContent = "Initials";
-        const scoreHeader = document.createElement("th");
-        scoreHeader.textContent = "Score";
+    const storedScores = JSON.parse(localStorage.getItem("scores")) || [];
+    storedScores.push(score);
+    localStorage.setItem("scores", JSON.stringify(storedScores));
 
-    
-        highScoreTable.classList.add("tableH");
-        headerRow.classList.add("tableH");
-        initialsHeader.classList.add("tableH", "tHeaders");
-        scoreHeader.classList.add("tableH", "tHeaders");
+    const intCon = document.createElement("div");
+    intCon.classList.add("intCon1");
+
+    // Initials form
+    const form = document.createElement("form");
+    form.addEventListener("submit", function (event) {
+      article1.innerHTML = "Leader Board";
+      article1.classList.add("leaderText");
+      event.preventDefault();
+      const initialsProvide = inputField.value;
+      if (!initialsProvide) {
+        alert("Please enter your initials!");
+        return;
+      }
+      const initials = inputField.value;
+      const initialsAndScores = JSON.parse(localStorage.getItem("initialsAndScores")) || [];
+      initialsAndScores.push({ initials, score });
+      localStorage.setItem("initialsAndScores", JSON.stringify(initialsAndScores));
+
+      scoreBox.innerHTML = "";
+      intCon.innerHTML = "";
+      scoreBox.classList.add("scoreBox2");
+      intCon.classList.add("intCon2");
+
+      const highScoreTable = document.createElement("table");
+      const headerRow = document.createElement("tr");
+      const initialsHeader = document.createElement("th");
+      initialsHeader.textContent = "Initials";
+      const scoreHeader = document.createElement("th");
+      scoreHeader.textContent = "Score";
 
 
-        headerRow.appendChild(initialsHeader);
-        headerRow.appendChild(scoreHeader);
-        highScoreTable.appendChild(headerRow);
-       
-        const topScores = initialsAndScores.sort((a, b) => b.score - a.score).slice(0, 10);
+      highScoreTable.classList.add("tableH");
+      headerRow.classList.add("tableH");
+      initialsHeader.classList.add("tableH", "tHeaders");
+      scoreHeader.classList.add("tableH", "tHeaders");
 
-        for (let i = 0; i < topScores.length; i++) {
-          const row = document.createElement("tr");
-          const initialsCell = document.createElement("td");
-          const scoreCell = document.createElement("td");
-        
-          initialsCell.textContent = topScores[i].initials;
-          scoreCell.textContent = topScores[i].score;
-        
-          row.appendChild(initialsCell);
-          row.appendChild(scoreCell);
-          highScoreTable.appendChild(row);
-        }
-        
-        scoreB.appendChild(highScoreTable);
 
-        const homeButton = document.createElement("button");
-      
-        homeButton.classList.add("homeButt");
-        intCon.appendChild(homeButton);
-        homeButton.textContent = "Home";
-        homeButton.addEventListener("click", function() {
-            location.reload();
-        });
-        
+      headerRow.appendChild(initialsHeader);
+      headerRow.appendChild(scoreHeader);
+      highScoreTable.appendChild(headerRow);
 
+      const topScores = initialsAndScores.sort((a, b) => b.score - a.score).slice(0, 10);
+
+      for (let i = 0; i < topScores.length; i++) {
+        const row = document.createElement("tr");
+        const initialsCell = document.createElement("td");
+        const scoreCell = document.createElement("td");
+
+        initialsCell.textContent = topScores[i].initials;
+        scoreCell.textContent = topScores[i].score;
+
+        row.appendChild(initialsCell);
+        row.appendChild(scoreCell);
+        highScoreTable.appendChild(row);
+      }
+
+      scoreB.appendChild(highScoreTable);
+
+      const homeButton = document.createElement("button");
+
+      homeButton.classList.add("homeButt");
+      intCon.appendChild(homeButton);
+      homeButton.textContent = "Home";
+      homeButton.addEventListener("click", function () {
+        location.reload();
       });
 
-    
-      const inputField = document.createElement("input");
-      inputField.setAttribute("type", "text");
-      inputField.setAttribute("placeholder", "Enter your initials");
-    
-      const submitButton = document.createElement("button");
-      submitButton.setAttribute("type", "submit");
-      submitButton.textContent = "Submit";
-    
-      form.appendChild(inputField);
-      form.appendChild(submitButton);
-      intCon.appendChild(form);
-    
-      scoreB.appendChild(scoreBox);
-      scoreB.appendChild(intCon);
-    
-      buttonDiv.appendChild(scoreB);
+
     });
-  }
+
+
+    const inputField = document.createElement("input");
+    inputField.setAttribute("type", "text");
+    inputField.setAttribute("placeholder", "Enter your initials");
+
+    const submitButton = document.createElement("button");
+    submitButton.setAttribute("type", "submit");
+    submitButton.textContent = "Submit";
+
+    form.appendChild(inputField);
+    form.appendChild(submitButton);
+    intCon.appendChild(form);
+
+    scoreB.appendChild(scoreBox);
+    scoreB.appendChild(intCon);
+
+    buttonDiv.appendChild(scoreB);
+  });
+}
 
   // Home screen
 
- 
+
